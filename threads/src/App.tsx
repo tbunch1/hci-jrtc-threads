@@ -5,6 +5,7 @@ import Main from "./components/Main";
 import { GlobalProvider } from "./components/GlobalProvider";
 import Panel from "./components/Panel";
 import DesignButtons from "./components/DesignButtons";
+import RightPanel from "./components/RightPanel";
 
 function App() {
   return (
@@ -20,6 +21,10 @@ function App() {
         
         <div>
           <DesignButtons />
+        </div>
+
+        <div>
+          <RightPanel />
         </div>
         
       </GlobalProvider>
