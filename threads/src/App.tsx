@@ -2,7 +2,6 @@ import React from "react";
 import "./App.css";
 import Tree from "./components/Tree";
 import Main from "./components/Main";
-import Panel from "./components/Panel";
 
 function App() {
   return (
