@@ -1,0 +1,48 @@
+.mergePopup {
+  background-color: #D9D9B9;
+  padding: 5px 10px;
+  border-radius: 28px;
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mergeInstr {
+  background-color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 12px;
+  position: fixed;
+  bottom: 90px;
+  left: 300px;
+}
+
+.cancelButton {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 28px;
+  position: fixed;
+  bottom: 50px;
+  left: 300px;
+  z-index: 10;
+}
+
+.confirmButton {
+  background-color: #D9D9B9;
+  padding: 5px 10px;
+  border-radius: 28px;
+  position: fixed;
+  bottom: 50px;
+  left: 370px;
+  z-index: 10;
+}
+
+.selectStatus {
+  background-color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 28px;
+  position: fixed;
+  bottom: 50px;
+  left: 370px;
+}

@@ -13,23 +13,32 @@ class Node {
   }
 }
 
-const TreeNode: React.FC<{
+interface TreeNodeProps {
   node: Node;
   addChild: (parent: Node, name: string) => void;
   clickedNodeId: number | null;
+  clickedNodeId2: number | null;
   nodeClick: (id: number) => void;
-}> = ({ node, addChild, clickedNodeId, nodeClick }) => {
+  isMergeMode: boolean;
+}
+
+const TreeNode: React.FC<TreeNodeProps> = ({ node, addChild, clickedNodeId, clickedNodeId2, nodeClick, isMergeMode }) => {
   const handleAddChild = () => {
     const childName = prompt("Enter child node name:"); // Prompt for child name
     if (childName) addChild(node, childName);
   };
 
+  const getNodeStyle = () => {
+    if (isMergeMode) {
+      if (node.id === clickedNodeId || node.id === clickedNodeId2) return "bg-red-500";
+    }
+    return node.id === clickedNodeId ? "bg-red-500" : "bg-blue-500";
+  };
+
   return (
     <div className="relative group">
       <div
-        className={`w-20 p-2 text-white rounded-lg text-center cursor-pointer ${
-          node.id === clickedNodeId ? "bg-red-500" : "bg-blue-500"
-        }`}
+        className={`w-20 p-2 text-white rounded-lg text-center cursor-pointer ${getNodeStyle()}`}
         onClick={() => nodeClick(node.id)}
       >
         {node.name || "Empty Node"}
@@ -65,7 +74,9 @@ const TreeNode: React.FC<{
                   node={child}
                   addChild={addChild}
                   clickedNodeId={clickedNodeId}
+                  clickedNodeId2={clickedNodeId2}
                   nodeClick={nodeClick}
+                  isMergeMode={isMergeMode}
                 />
               </div>
             ))}
@@ -76,7 +87,7 @@ const TreeNode: React.FC<{
   );
 };
 
-const Tree = () => {
+const Tree: React.FC< {isMergeMode: boolean} > = ({ isMergeMode }) => {
   const [isVisible, setIsVisible] = useState(true);
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
@@ -84,6 +95,7 @@ const Tree = () => {
 
   const [data, setData] = useState<Node>(new Node(0, "Root"));
   const [clickedNodeId, setClickedNodeId] = useState<number | null>(null);
+  const [clickedNodeId2, setClickedNodeId2] = useState<number | null>(null);
   const [nextId, setNextId] = useState<number>(1); // Counter for unique node ids
 
   const addChild = (parentNode: Node, childName: string) => {
@@ -102,7 +114,15 @@ const Tree = () => {
   };
 
   const nodeClick = (id: number) => {
-    setClickedNodeId(id); // Update clicked node by id
+    if (isMergeMode) {
+      if (clickedNodeId === null) {
+        setClickedNodeId(id);
+      } else if (clickedNodeId2 === null && id !== clickedNodeId) {
+        setClickedNodeId2(id);
+      }
+    } else {
+      setClickedNodeId(id);
+    }
   };
 
   return (
@@ -128,7 +148,9 @@ const Tree = () => {
             node={data}
             addChild={addChild}
             clickedNodeId={clickedNodeId}
+            clickedNodeId2={clickedNodeId2}
             nodeClick={nodeClick}
+            isMergeMode={isMergeMode}
           />
         </div>
       </div>

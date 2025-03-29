@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
 import '../styles/RightPanel.css';
 
-const RightPanel: React.FC = () => {
+interface RightPanelProps {
+  toggleMergeMode: () => void;
+}
+
+const RightPanel: React.FC<RightPanelProps> = ({ toggleMergeMode }) => {
+
   const handleSnapshot = () => {
     console.log("Snapshot taken");
-    // TODO: Snapshot logic -- Christina
   };
-
-  const handleMerge = () => {
-    console.log("Merge action triggered");
-    // Merge logic
-  };
-
-  console.log("RightPanel rendered");
 
   return (
-    <div className="rightPanel">
-      <div>
+    <div>
+      <div className="rightPanel">
         <button className="rightPanelButton" onClick={handleSnapshot}>Snapshot</button>
-        <button className="rightPanelButton" onClick={handleMerge}>Merge</button>
+        <button className="rightPanelButton" onClick={toggleMergeMode}>Merge</button>
       </div>
     </div>
   );
