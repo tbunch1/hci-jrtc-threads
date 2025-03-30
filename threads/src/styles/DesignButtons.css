@@ -1,0 +1,66 @@
+.designPanel {
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    right: 20px;
+    top: 30px;
+    z-index: 10;
+  }
+  
+.designButton {
+    aspect-ratio: 1/1;
+    width: 70px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin: 10px;
+    border: 2px dashed #D8D8D8;
+    border-radius: 16px;
+}
+
+.closeButton {
+    aspect-ratio: 1/1;
+    width: 30px;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px dashed #D8D8D8;
+    border-radius: 16px;
+    
+}
+
+.previewPhoto {
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.previewButton {
+    aspect-ratio: 1/1;
+    width: 70px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin: 10px;
+
+    border-radius: 16px;
+}
+  
+.specificPanel {
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    right: 150px;
+    top: 30px;
+    z-index: 10;
+  }
+  
+  

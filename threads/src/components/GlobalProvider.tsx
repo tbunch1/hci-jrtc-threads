@@ -15,9 +15,9 @@ const GlobalContext = createContext<GlobalState | undefined>(undefined);
 
 // Provider component
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [shirt, setShirt] = useState<number>(0);
-  const [pants, setPants] = useState<number>(7);
-  const [design, setDesign] = useState<number>(11);
+  const [shirt, setShirt] = useState<number>(-1);
+  const [pants, setPants] = useState<number>(-1);
+  const [design, setDesign] = useState<number>(-1);
 
 
 
