@@ -1,25 +1,40 @@
 import React from 'react';
 import { useGlobalState } from './GlobalProvider';
+import { shirtopts, pantsopts, designopts } from "./ClothesOptions";
 
 const Main: React.FC = () => {
-  const {shirt, pants, setShirt, setPants} = useGlobalState();
+  const {shirt, pants, design, setShirt, setPants, setDesign} = useGlobalState();
   return (
 
     <div className="relative w-screen h-screen flex justify-center items-center">
-      <div className="absolute w-60 h-60">
+
         <img 
-          src="/images/man.png" 
-          alt="Random Image" 
-          className="h-4/5 object-contain"
+          src="/images/mannequin.png" 
+          alt="an androgynous mannequin" 
+          className="absolute "
         />
-        {shirt.length > 0 && (
+        {pants >= 0 && (
           <img 
-            src={shirt}
-            //will update to use shirt fields/json
-            className="absolute top-5 left-5"
+            src={pantsopts[pants % 4].src}
+            alt={pantsopts[pants % 4].alt}
+            className={pantsopts[pants % 4].class}
           />
         )}
-      </div>
+        {shirt >= 0 && (
+          <img 
+            src={shirtopts[shirt % 4].src}
+            alt={shirtopts[shirt % 4].alt}
+            className={shirtopts[shirt % 4].class}
+          />
+        )}
+        {design >=0 && (
+        <img 
+          src={designopts[design % 4].src}
+          alt={designopts[design % 4].alt}
+          className={designopts[design % 4].class}
+        />         
+        )}
+
 
     </div>
   );

@@ -2,10 +2,12 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 
 // Define the shape of your global state
 interface GlobalState {
-  shirt: string;
-  pants: string;
-  setShirt: (name: string) => void;
-  setPants: (name: string) => void;
+  shirt: number;
+  pants: number;
+  design: number;
+  setShirt: (id: number) => void;
+  setPants: (id: number) => void;
+  setDesign: (id: number) => void;
 }
 
 // Create context
@@ -13,12 +15,14 @@ const GlobalContext = createContext<GlobalState | undefined>(undefined);
 
 // Provider component
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [shirt, setShirt] = useState<string>("/images/shirt.png");
-  const [pants, setPants] = useState<string>("");
+  const [shirt, setShirt] = useState<number>(0);
+  const [pants, setPants] = useState<number>(7);
+  const [design, setDesign] = useState<number>(11);
+
 
 
   return (
-    <GlobalContext.Provider value={{ shirt, pants, setShirt, setPants }}>
+    <GlobalContext.Provider value={{ shirt, pants, design, setShirt, setPants, setDesign }}>
       {children}
     </GlobalContext.Provider>
   );

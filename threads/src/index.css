@@ -15,3 +15,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.mannequin-pic {
+  width: 15%;
+  height: auto;
+}
+
+.grey-shirt {
+  transform: translate(-50%, -50%) translate(138px, -38px)
+}

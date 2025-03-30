@@ -3,13 +3,13 @@ import { useGlobalState } from './GlobalProvider';
 
 
 const DesignButtons: React.FC = () => {
-    const {shirt, pants, setShirt, setPants} = useGlobalState();
+    const {shirt, pants, design, setShirt, setPants, setDesign} = useGlobalState();
 
     const changeShirt = () => {
-        if (shirt.length > 0) {
-            setShirt("");
+        if (shirt >= 0) {
+            setShirt(-1);
         } else {
-            setShirt("/images/shirt.png")
+            setShirt(1)
         }
     }
 
