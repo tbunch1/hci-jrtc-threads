@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-class Node {
+export class Node {
   id: number;
   name: string;
   children: Node[];
@@ -87,15 +87,19 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, addChild, clickedNodeId, clic
   );
 };
 
-const Tree: React.FC< {isMergeMode: boolean} > = ({ isMergeMode }) => {
+const Tree: React.FC< {isMergeMode: boolean; clickedNodeId: number | null; setClickedNodeId: (id: number) => void ; clickedNodeId2: number | null; nodeClick: (id: number) => void} > = ({ 
+    isMergeMode, 
+    clickedNodeId, 
+    setClickedNodeId,
+    clickedNodeId2, 
+    nodeClick 
+}) => {
   const [isVisible, setIsVisible] = useState(true);
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
 
   const [data, setData] = useState<Node>(new Node(0, "Root"));
-  const [clickedNodeId, setClickedNodeId] = useState<number | null>(null);
-  const [clickedNodeId2, setClickedNodeId2] = useState<number | null>(null);
   const [nextId, setNextId] = useState<number>(1); // Counter for unique node ids
 
   const addChild = (parentNode: Node, childName: string) => {
@@ -111,18 +115,6 @@ const Tree: React.FC< {isMergeMode: boolean} > = ({ isMergeMode }) => {
     };
 
     setData((prevData) => updateTree(prevData));
-  };
-
-  const nodeClick = (id: number) => {
-    if (isMergeMode) {
-      if (clickedNodeId === null) {
-        setClickedNodeId(id);
-      } else if (clickedNodeId2 === null && id !== clickedNodeId) {
-        setClickedNodeId2(id);
-      }
-    } else {
-      setClickedNodeId(id);
-    }
   };
 
   return (

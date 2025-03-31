@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Merge.css';
+import { click } from '@testing-library/user-event/dist/click';
 
 interface MergeProps {
   onClose: () => void;
+  clickedNodeId: number | null;
+  clickedNodeId2: number| null;
 }
 
-const Merge: React.FC<MergeProps> = ({ onClose }) => {
+const Merge: React.FC<MergeProps> = ({ onClose, clickedNodeId, clickedNodeId2 }) => {
   const [twoNodesSelected, setTwoNodesSelected] = useState(false);
-  const [numNodesSelected, setNumNodesSelected] = useState(0);
+  const [numNodesSelected, setNumNodesSelected] = useState(1);
+
+  useEffect(() => {
+    if (clickedNodeId !== null && clickedNodeId2 !== null) {
+      setTwoNodesSelected(true);
+      setNumNodesSelected(2);
+    } else {
+      setTwoNodesSelected(false);
+      setNumNodesSelected(1);
+    }
+  }, [clickedNodeId, clickedNodeId2]);
 
   return (
     <div>
