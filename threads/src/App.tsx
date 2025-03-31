@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import Tree from "./components/Tree";
+import { Node } from "./components/Tree";
 import Main from "./components/Main";
 import { GlobalProvider } from "./components/GlobalProvider";
 import Panel from "./components/Panel";
@@ -10,8 +11,13 @@ import Merge from './components/Merge';
 
 function App() {
   const [isMergeMode, setIsMergeMode] = useState(false);
+
+  const [data, setData] = useState<Node>(new Node(0, "Root"));
+  const [nextId, setNextId] = useState<number>(1); // Counter for unique node ids
   const [clickedNodeId, setClickedNodeId] = useState<number | null>(null);
   const [clickedNodeId2, setClickedNodeId2] = useState<number | null>(null);
+  const [clickedNode, setClickedNode] = useState<Node | null>(null);
+  const [clickedNode2, setClickedNode2] = useState<Node | null>(null);
 
   const toggleMergeMode = () => {
     setIsMergeMode((prev) => !prev)
@@ -20,18 +26,37 @@ function App() {
   const closeMerge = () => {
     setIsMergeMode(false);
     setClickedNodeId2(null);
+    setClickedNode2(null);
   };
 
-  const handleNodeClick = (id: number) => {
+  const handleNodeClick = (node: Node) => {
     if (isMergeMode) {
-      if (clickedNodeId === null) {
-        setClickedNodeId(id);
-      } else if (clickedNodeId2 === null && id !== clickedNodeId) {
-        setClickedNodeId2(id);
+      if (clickedNode === null) {
+        setClickedNodeId(node.id);
+        setClickedNode(node);
+      } else if (clickedNode2 === null && node !== clickedNode) {
+        setClickedNodeId2(node.id);
+        setClickedNode2(node);
       }
     } else {
-      setClickedNodeId(id);
+      setClickedNodeId(node.id);
+      setClickedNode(node);
     }
+  };
+
+  const addChild = (parentNode: Node, childName: string) => {
+    const newNode = new Node(nextId, childName, []);
+    setClickedNodeId(nextId);
+    setNextId(nextId + 1); // Increment the id counter
+
+    const updateTree = (node: Node): Node => {
+      if (node.id === parentNode.id) {
+        return { ...node, children: [...node.children, newNode] };
+      }
+      return { ...node, children: node.children.map(updateTree) };
+    };
+
+    setData((prevData) => updateTree(prevData));
   };
 
   return (
@@ -41,9 +66,10 @@ function App() {
             <Tree 
               isMergeMode={isMergeMode}
               clickedNodeId={clickedNodeId}
-              setClickedNodeId={setClickedNodeId}
               clickedNodeId2={clickedNodeId2}
               nodeClick={handleNodeClick}
+              addChild={addChild}
+              data={data}
             />
         </div>
 
@@ -62,8 +88,9 @@ function App() {
         {isMergeMode && (
           <Merge 
             onClose={closeMerge}
-            clickedNodeId={clickedNodeId}
-            clickedNodeId2={clickedNodeId2}
+            clickedNode={clickedNode}
+            clickedNode2={clickedNode2}
+            addChild={addChild}
           />
         )}
         

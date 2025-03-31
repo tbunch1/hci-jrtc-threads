@@ -18,7 +18,7 @@ interface TreeNodeProps {
   addChild: (parent: Node, name: string) => void;
   clickedNodeId: number | null;
   clickedNodeId2: number | null;
-  nodeClick: (id: number) => void;
+  nodeClick: (node: Node) => void;
   isMergeMode: boolean;
 }
 
@@ -39,7 +39,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, addChild, clickedNodeId, clic
     <div className="relative group">
       <div
         className={`w-20 p-2 text-white rounded-lg text-center cursor-pointer ${getNodeStyle()}`}
-        onClick={() => nodeClick(node.id)}
+        onClick={() => nodeClick(node)}
       >
         {node.name || "Empty Node"}
       </div>
@@ -87,34 +87,24 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, addChild, clickedNodeId, clic
   );
 };
 
-const Tree: React.FC< {isMergeMode: boolean; clickedNodeId: number | null; setClickedNodeId: (id: number) => void ; clickedNodeId2: number | null; nodeClick: (id: number) => void} > = ({ 
+const Tree: React.FC< {
+    isMergeMode: boolean; 
+    clickedNodeId: number | null; 
+    clickedNodeId2: number | null; 
+    nodeClick: (node: Node) => void
+    addChild: (parentNode: Node, childName: string) => void;
+    data: Node
+} > = ({ 
     isMergeMode, 
     clickedNodeId, 
-    setClickedNodeId,
     clickedNodeId2, 
-    nodeClick 
+    nodeClick,
+    addChild,
+    data
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
-  };
-
-  const [data, setData] = useState<Node>(new Node(0, "Root"));
-  const [nextId, setNextId] = useState<number>(1); // Counter for unique node ids
-
-  const addChild = (parentNode: Node, childName: string) => {
-    const newNode = new Node(nextId, childName, []);
-    setClickedNodeId(nextId);
-    setNextId(nextId + 1); // Increment the id counter
-
-    const updateTree = (node: Node): Node => {
-      if (node.id === parentNode.id) {
-        return { ...node, children: [...node.children, newNode] };
-      }
-      return { ...node, children: node.children.map(updateTree) };
-    };
-
-    setData((prevData) => updateTree(prevData));
   };
 
   return (
