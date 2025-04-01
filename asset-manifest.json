@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/hci-jrtc-threads/static/css/main.bada2883.css",
+    "main.js": "/hci-jrtc-threads/static/js/main.1b860564.js",
+    "static/js/453.b9684a38.chunk.js": "/hci-jrtc-threads/static/js/453.b9684a38.chunk.js",
+    "index.html": "/hci-jrtc-threads/index.html",
+    "main.bada2883.css.map": "/hci-jrtc-threads/static/css/main.bada2883.css.map",
+    "main.1b860564.js.map": "/hci-jrtc-threads/static/js/main.1b860564.js.map",
+    "453.b9684a38.chunk.js.map": "/hci-jrtc-threads/static/js/453.b9684a38.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bada2883.css",
+    "static/js/main.1b860564.js"
+  ]
+}
