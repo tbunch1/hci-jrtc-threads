@@ -45,7 +45,7 @@ function App() {
   };
 
   const addChild = (parentNode: Node, childName: string) => {
-    const newNode = new Node(nextId, childName, []);
+    const newNode = new Node(nextId, childName, [], [parentNode.design[0], parentNode.design[1], parentNode.design[2]]);
     setClickedNodeId(nextId);
     setNextId(nextId + 1); // Increment the id counter
 
@@ -70,6 +70,7 @@ function App() {
               nodeClick={handleNodeClick}
               addChild={addChild}
               data={data}
+              setData={setData}
             />
         </div>
 

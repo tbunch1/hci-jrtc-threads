@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import { useGlobalState } from "./GlobalProvider";
 
 export class Node {
   id: number;
   name: string;
   children: Node[];
-  image?: string; // Optional property for image
+  design: number[];
 
-  constructor(id: number, name: string, children: Node[] = []) {
+  constructor(id: number, name: string, children: Node[] = [], design: number[] = [-1, -1, -1]) {
     this.id = id;
     this.name = name;
     this.children = children;
+    this.design = design;
   }
 }
 
@@ -35,11 +37,20 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, addChild, clickedNodeId, clic
     return node.id === clickedNodeId ? "bg-red-500" : "bg-blue-500";
   };
 
+  const {setShirt, setPants, setDesign} = useGlobalState();
+    const handleNodeClick = () => {
+      setShirt(node.design[0]);
+      setPants(node.design[1]);
+      setDesign(node.design[2]);
+      nodeClick(node);
+      console.log(node.design);
+    }
+
   return (
     <div className="relative group">
       <div
         className={`w-20 p-2 text-white rounded-lg text-center cursor-pointer ${getNodeStyle()}`}
-        onClick={() => nodeClick(node)}
+        onClick={handleNodeClick}
       >
         {node.name || "Empty Node"}
       </div>
@@ -93,19 +104,57 @@ const Tree: React.FC< {
     clickedNodeId2: number | null; 
     nodeClick: (node: Node) => void
     addChild: (parentNode: Node, childName: string) => void;
-    data: Node
+    data: Node;
+    setData: (data: Node) => void;
 } > = ({ 
     isMergeMode, 
     clickedNodeId, 
     clickedNodeId2, 
     nodeClick,
     addChild,
-    data
+    data,
+    setData
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
+
+  const {shirt, pants, design} = useGlobalState();
+
+  const saveDesign = () => {
+      if (clickedNodeId === null) return;
+  
+      // Get the node that was clicked
+      const clickedNode = findNodeById(data, clickedNodeId);
+  
+      if (clickedNode) {
+        // Assuming shirt, pants, and design are in the global state or component state
+        const updatedDesign = [shirt, pants, design]; // Replace these with your actual values from state
+        clickedNode.design = updatedDesign;
+  
+        // Update the tree with the modified design
+        const updateTree = (node: Node): Node => {
+          if (node.id === clickedNodeId) {
+            return { ...node, design: updatedDesign };
+          }
+          return { ...node, children: node.children.map(updateTree) };
+        };
+  
+        setData(updateTree(data));
+      }
+    };
+
+  const findNodeById = (node: Node, id: number): Node | null => {
+      if (node.id === id) {
+        return node;
+      }
+      for (let child of node.children) {
+        const foundNode = findNodeById(child, id);
+        if (foundNode) return foundNode;
+      }
+      return null;
+    };
 
   return (
     <div>
@@ -114,6 +163,13 @@ const Tree: React.FC< {
         className="bg-blue-500 text-white px-2 py-1 hover:bg-blue-600 transition duration-200"
       >
         {isVisible ? "Hide Tree" : "Show Tree"}
+      </button>
+
+      <button
+        onClick={saveDesign}
+        className="bg-blue-500 text-white px-2 py-1 hover:bg-blue-600 transition duration-200"
+      >
+        Save Design
       </button>
 
       <div
