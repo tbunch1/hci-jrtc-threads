@@ -15,13 +15,13 @@ const DesignButtons: React.FC = () => {
         <div>
             <div className="designPanel">
                 <button className="designButton">
-                    <img src="/images/icon-shirt.png" alt="the outline of a shirt" onClick={() => setSelected(0)}/>
+                    <img src={`${process.env.PUBLIC_URL}/images/icon-shirt.png`}  alt="the outline of a shirt" onClick={() => setSelected(0)}/>
                 </button>
                 <button className="designButton">
-                    <img src="/images/icon-pants.png" alt="the outline of a shirt" onClick={() => setSelected(1)}/>
+                    <img src={`${process.env.PUBLIC_URL}/images/icon-pants.png`} alt="the outline of a shirt" onClick={() => setSelected(1)}/>
                 </button>
                 <button className="designButton">
-                    <img src="/images/icon-design.png" alt="the outline of a shirt" onClick={() => setSelected(2)}/>
+                    <img src={`${process.env.PUBLIC_URL}/images/icon-design.png`} alt="the outline of a shirt" onClick={() => setSelected(2)}/>
                 </button>
             </div>
             { selected >= 0 && (

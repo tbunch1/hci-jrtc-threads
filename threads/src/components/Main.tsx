@@ -9,7 +9,7 @@ const Main: React.FC = () => {
     <div className="relative w-screen h-screen flex justify-center items-center">
 
         <img 
-          src="/images/mannequin.png" 
+          src={`${process.env.PUBLIC_URL}/images/mannequin.png`} 
           alt="an androgynous mannequin" 
           className="absolute "
         />
