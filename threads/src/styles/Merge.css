@@ -46,3 +46,11 @@
   bottom: 50px;
   left: 370px;
 }
+
+.conflictWarning {
+  color: red;
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}

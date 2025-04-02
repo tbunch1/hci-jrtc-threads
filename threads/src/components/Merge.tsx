@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Merge.css';
 import { Node } from './Tree';
+import MergeConflict from './MergeConflict';
 import { click } from '@testing-library/user-event/dist/click';
 
 interface MergeProps {
@@ -27,11 +28,25 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
 
   const handleConfirmClick = () => {
     if (clickedNode && clickedNode2) {
-      // compare nodes' clothes options
-      let newClothesOpts = [];
-      let slotConflicts = [];
+      const designOpt1 = clickedNode.design;
+      const designOpt2 = clickedNode2.design;
+      let newClothesOpts = new Array(designOpt1.length);
+      let slotConflicts = new Array(designOpt1.length).fill(0);
+      let isMergeConflict = false;
+      for (let i = 0; i < designOpt1.length; i++) {
+        let opt1 = designOpt1[i];
+        let opt2 = designOpt2[i];
+        if (opt1 === opt2 || opt2 === -1) {
+          newClothesOpts[i] = opt1;
+        } else if (opt1 === -1) {
+          newClothesOpts[i] = opt2;
+        } else {
+          slotConflicts[i] = 1;
+          isMergeConflict = true;
+        }
+      }
 
-      if (slotConflicts.length !== 0) {
+      if (isMergeConflict) {
         setIsMergeConflictMode(true);
       } else {
         const parent = clickedNode.id > clickedNode2.id ? clickedNode : clickedNode2;
@@ -45,12 +60,24 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
 
   return (
     <div>
-      <p className="mergePopup">Merge</p>
-      <p className="mergeInstr">Select two design nodes to merge</p>
-      <button className="cancelButton" onClick={onClose}>Cancel</button>
-      {!twoNodesSelected && <p className="selectStatus">{`${numNodesSelected}/2 nodes selected`}</p>}
-      {twoNodesSelected && (
-        <button className="confirmButton" onClick={handleConfirmClick}>Confirm</button>
+      {!isMergeConflictMode && (
+        <div>
+          <p className="mergePopup">Merge</p>
+          <p className="mergeInstr">Select two design nodes to merge</p>
+          <button className="cancelButton" onClick={onClose}>Cancel</button>
+          {!twoNodesSelected && <p className="selectStatus">{`${numNodesSelected}/2 nodes selected`}</p>}
+          {twoNodesSelected && (
+            <button className="confirmButton" onClick={handleConfirmClick}>Confirm</button>
+          )}
+        </div>
+      )};
+      
+      
+      {isMergeConflictMode && (
+        <div>
+          <MergeConflict />
+          <button className="cancelButton" onClick={onClose}>Cancel</button>
+        </div>
       )}
     </div>
   );
