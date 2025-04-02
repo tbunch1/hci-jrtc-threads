@@ -3,7 +3,7 @@ import "./App.css";
 import Tree from "./components/Tree";
 import { Node } from "./components/Tree";
 import Main from "./components/Main";
-import { GlobalProvider } from "./components/GlobalProvider";
+import { useGlobalState } from "./components/GlobalProvider";
 import Panel from "./components/Panel";
 import DesignButtons from "./components/DesignButtons";
 import RightPanel from "./components/RightPanel";
@@ -29,6 +29,8 @@ function App() {
     setClickedNode2(null);
   };
 
+  const {setShirt, setPants, setDesign} = useGlobalState();
+
   const handleNodeClick = (node: Node) => {
     if (isMergeMode) {
       if (clickedNode === null) {
@@ -42,10 +44,18 @@ function App() {
       setClickedNodeId(node.id);
       setClickedNode(node);
     }
+
+    setShirt(node.design[0]);
+    setPants(node.design[1]);
+    setDesign(node.design[2]);
   };
 
-  const addChild = (parentNode: Node, childName: string) => {
-    const newNode = new Node(nextId, childName, [], [parentNode.design[0], parentNode.design[1], parentNode.design[2]]);
+  const addChild = (
+    parentNode: Node, 
+    childName: string, 
+    design: number[] = [parentNode.design[0], parentNode.design[1], parentNode.design[2]]
+  ): Node => {
+    const newNode = new Node(nextId, childName, [], [design[0], design[1], design[2]]);
     setClickedNodeId(nextId);
     setNextId(nextId + 1); // Increment the id counter
 
@@ -57,11 +67,12 @@ function App() {
     };
 
     setData((prevData) => updateTree(prevData));
+
+    return newNode;
   };
 
   return (
     <div className="App relative">
-      <GlobalProvider>
         <div className="absolute top-0 left-0 w-full z-10">
             <Tree 
               isMergeMode={isMergeMode}
@@ -92,10 +103,9 @@ function App() {
             clickedNode={clickedNode}
             clickedNode2={clickedNode2}
             addChild={addChild}
+            handleNodeClick={handleNodeClick}
           />
         )}
-        
-      </GlobalProvider>
     </div>
   );
 }

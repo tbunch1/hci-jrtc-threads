@@ -8,10 +8,11 @@ interface MergeProps {
   onClose: () => void;
   clickedNode: Node | null;
   clickedNode2: Node | null;
-  addChild: (parentNode: Node, childName: string) => void;
+  addChild: (parentNode: Node, childName: string, design?: number[]) => Node;
+  handleNodeClick: (node:Node) => void;
 }
 
-const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addChild }) => {
+const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addChild, handleNodeClick }) => {
   const [isMergeConflictMode, setIsMergeConflictMode] = useState(false);
   const [twoNodesSelected, setTwoNodesSelected] = useState(false);
   const [numNodesSelected, setNumNodesSelected] = useState(1);
@@ -30,9 +31,12 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
     if (clickedNode && clickedNode2) {
       const designOpt1 = clickedNode.design;
       const designOpt2 = clickedNode2.design;
+      console.log(`designOpt1: ${designOpt1}`)
+      console.log(`designOpt2: ${designOpt2}`)
       let newClothesOpts = new Array(designOpt1.length);
       let slotConflicts = new Array(designOpt1.length).fill(0);
       let isMergeConflict = false;
+
       for (let i = 0; i < designOpt1.length; i++) {
         let opt1 = designOpt1[i];
         let opt2 = designOpt2[i];
@@ -51,7 +55,11 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
       } else {
         const parent = clickedNode.id > clickedNode2.id ? clickedNode : clickedNode2;
         const mergeName = prompt("Enter merged design node name:");
-        if (mergeName) addChild(parent, mergeName);
+        console.log(`newClothesOpts: ${newClothesOpts}`)
+        if (mergeName) {
+          const mergedDesign = addChild(parent, mergeName, newClothesOpts);
+          handleNodeClick(mergedDesign);
+        }
         onClose();
       }
     }

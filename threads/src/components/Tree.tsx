@@ -103,7 +103,7 @@ const Tree: React.FC< {
     clickedNodeId: number | null; 
     clickedNodeId2: number | null; 
     nodeClick: (node: Node) => void
-    addChild: (parentNode: Node, childName: string) => void;
+    addChild: (parentNode: Node, childName: string, design?: number[]) => Node;
     data: Node;
     setData: (data: Node) => void;
 } > = ({ 
