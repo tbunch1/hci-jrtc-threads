@@ -7,7 +7,6 @@ const Main: React.FC = () => {
   return (
 
     <div className="relative w-screen h-screen flex justify-center items-center">
-
         <img 
           src={`${process.env.PUBLIC_URL}/images/mannequin.png`} 
           alt="an androgynous mannequin" 

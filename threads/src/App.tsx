@@ -84,10 +84,11 @@ function App() {
               setData={setData}
             />
         </div>
-
-        <div className="w-screen h-screen relative">
-          <Main />
-        </div>
+        {!isMergeMode &&
+          <div className="w-screen h-screen relative">
+            <Main />
+          </div>
+        }
         
         <div>
           <DesignButtons />

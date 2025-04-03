@@ -3,13 +3,14 @@ import '../styles/Merge.css';
 import { Node } from './Tree';
 import MergeConflict from './MergeConflict';
 import { click } from '@testing-library/user-event/dist/click';
+import MergeClothes from './MergeClothes';
 
 interface MergeProps {
   onClose: () => void;
   clickedNode: Node | null;
   clickedNode2: Node | null;
   addChild: (parentNode: Node, childName: string, design?: number[]) => Node;
-  handleNodeClick: (node:Node) => void;
+  handleNodeClick: (node: Node) => void;
 }
 
 const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addChild, handleNodeClick }) => {
@@ -29,6 +30,7 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
 
   const handleConfirmClick = () => {
     if (clickedNode && clickedNode2) {
+      console.log("node 1: " + clickedNode.name);
       const designOpt1 = clickedNode.design;
       const designOpt2 = clickedNode2.design;
       console.log(`designOpt1: ${designOpt1}`)
@@ -63,11 +65,17 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
         onClose();
       }
     }
-    
+
   };
 
   return (
+
     <div>
+      <div>
+        {twoNodesSelected &&
+          <MergeClothes node1={clickedNode} node2={clickedNode2} />
+        }
+      </div>
       {!isMergeConflictMode && (
         <div>
           <p className="mergePopup">Merge</p>
@@ -79,8 +87,8 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
           )}
         </div>
       )};
-      
-      
+
+
       {isMergeConflictMode && (
         <div>
           <MergeConflict />
