@@ -66,6 +66,8 @@ function App() {
       return { ...node, children: node.children.map(updateTree) };
     };
 
+    handleNodeClick(newNode);
+
     setData((prevData) => updateTree(prevData));
 
     return newNode;
