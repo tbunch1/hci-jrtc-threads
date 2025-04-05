@@ -66,6 +66,7 @@ const MergeConflict: React.FC<MergeConflictProps> = ({
     let style: React.CSSProperties = {
       border: '2px dashed #000000',
       borderRadius: '16px',
+      zIndex: '10',
     };
     
     if (conflicts) {
@@ -73,18 +74,21 @@ const MergeConflict: React.FC<MergeConflictProps> = ({
         case 0: // shirt conflict
           style = {
             ...style,
-            width: '200px',
-            height: '250px',
-            marginLeft: '15%',
-            marginRight: '15%'
+            width: '250px',
+            height: '300px',
+            marginLeft: '9%',
+            marginRight: '9%',
+            transform: 'translateY(-225%)',
           };
           break;
         case 1: // pants conflict
           style = {
             ...style,
             width: '200px',
-            height: '300px',
-            marginRight: '15%'
+            height: '400px',
+            marginLeft: '11%',
+            marginRight: '11%',
+            transform: 'translateY(-120%)',
           };
           break;
         case 2: // design conflict
@@ -92,7 +96,9 @@ const MergeConflict: React.FC<MergeConflictProps> = ({
             ...style,
             width: '100px',
             height: '100px',
-            marginRight: '15%'
+            marginLeft: '13.5%',
+            marginRight: '13.5%',
+            transform: 'translateY(-610%)',
           };
           break;
       }
@@ -117,7 +123,7 @@ const MergeConflict: React.FC<MergeConflictProps> = ({
     <div>
       <p className="mergePopup">Merge Conflict</p>
 
-      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height:'100%'}}>
+      <div style={{display: 'flex', justifyContent: 'center'}}>
         <button style={getBoxStyle(1)} onClick={() => handleBoxClick(1)}></button>
         <button style={getBoxStyle(2)} onClick={() => handleBoxClick(2)}></button>
       </div>
