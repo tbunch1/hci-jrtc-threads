@@ -6,12 +6,14 @@ export class Node {
   name: string;
   children: Node[];
   design: number[];
+  parent: Node | null;
 
-  constructor(id: number, name: string, children: Node[] = [], design: number[] = [-1, -1, -1]) {
+  constructor(id: number, name: string, children: Node[] = [], design: number[] = [-1, -1, -1], parent: Node | null = null) {
     this.id = id;
     this.name = name;
     this.children = children;
     this.design = design;
+    this.parent = parent;
   }
 }
 
@@ -38,13 +40,17 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, addChild, clickedNodeId, clic
   };
 
   const {setShirt, setPants, setDesign} = useGlobalState();
-    const handleNodeClick = () => {
-      setShirt(node.design[0]);
-      setPants(node.design[1]);
-      setDesign(node.design[2]);
-      nodeClick(node);
-      console.log(node.design);
-    }
+  const handleNodeClick = () => {
+    const confirmSwitch = window.confirm("Did you save your current file?");
+    if (!confirmSwitch) return;
+  
+    setShirt(node.design[0]);
+    setPants(node.design[1]);
+    setDesign(node.design[2]);
+    nodeClick(node);
+    console.log(node.design);
+  };
+  
 
   return (
     <div className="relative group">
@@ -106,6 +112,7 @@ const Tree: React.FC< {
     addChild: (parentNode: Node, childName: string, design?: number[]) => Node;
     data: Node;
     setData: (data: Node) => void;
+    findNodeById: (node: Node, id: number) => Node | null;
 } > = ({ 
     isMergeMode, 
     clickedNodeId, 
@@ -113,7 +120,8 @@ const Tree: React.FC< {
     nodeClick,
     addChild,
     data,
-    setData
+    setData,
+    findNodeById
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const toggleVisibility = () => {
@@ -145,16 +153,15 @@ const Tree: React.FC< {
       }
     };
 
-  const findNodeById = (node: Node, id: number): Node | null => {
-      if (node.id === id) {
-        return node;
-      }
-      for (let child of node.children) {
-        const foundNode = findNodeById(child, id);
-        if (foundNode) return foundNode;
-      }
-      return null;
-    };
+    const printAllNodes = () => {
+      const traverse = (node: Node) => {
+        console.log(node.name);
+        node.children.forEach(traverse);
+      };
+    
+      traverse(data);
+    };    
+    
 
   return (
     <div>
@@ -172,10 +179,11 @@ const Tree: React.FC< {
         Save Design
       </button>
 
+
       <div
         style={{
           display: isVisible ? "block" : "none",
-          width: "20%",
+          width: "30%",
           height: "100vh", // 2/5th of the screen height
           overflow: "hidden",
           backgroundColor: "lightgray",

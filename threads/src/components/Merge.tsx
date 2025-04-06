@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Merge.css';
 import { Node } from './Tree';
 import MergeConflict from './MergeConflict';
-import { click } from '@testing-library/user-event/dist/click';
 import MergeClothes from './MergeClothes';
 
 interface MergeProps {
@@ -11,9 +10,12 @@ interface MergeProps {
   clickedNode2: Node | null;
   addChild: (parentNode: Node, childName: string, design?: number[]) => Node;
   handleNodeClick: (node: Node) => void;
+  findNodeById: (node: Node, id: number) => Node | null;
+  data: Node;
+  deleteNode: (root: Node, target: Node) => boolean;
 }
 
-const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addChild, handleNodeClick }) => {
+const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addChild, handleNodeClick, findNodeById, data, deleteNode }) => {
   const [isMergeConflictMode, setIsMergeConflictMode] = useState(false);
   const [totalConflicts, setTotalConflicts] = useState(0);
   const [slotConflicts, setSlotConflicts] = useState<number[]>([]);
@@ -65,19 +67,23 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
     }
 
   };
+  
 
   const createMergedNode = (node1: Node, node2: Node, newClothesOpts: number[]) => {
     if (node1 && node2) {
       const parent = node1.id > node2.id ? node1 : node2;
+  
       const mergeName = prompt("Enter merged design node name:");
-      console.log(`newClothesOpts: ${newClothesOpts}`)
       if (mergeName) {
-        const mergedDesign = addChild(parent, mergeName, newClothesOpts);
+        deleteNode(data, node1);
+        deleteNode(data, node2);
+        const mergedDesign = addChild(data, mergeName, newClothesOpts);
         handleNodeClick(mergedDesign);
       }
       onClose();
     }
-  }
+  };
+  
 
   return (
 
