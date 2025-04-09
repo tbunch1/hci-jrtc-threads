@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGlobalState } from "./GlobalProvider";
 
 export class Node {
@@ -167,6 +167,7 @@ const Tree: React.FC< {isMergeMode: boolean; clickedNodeId: number | null; setCl
     }
     return null;
   };
+
 
   return (
     <div>

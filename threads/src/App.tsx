@@ -1,23 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Tree from "./components/Tree";
 import { Node } from "./components/Tree";
 import Main from "./components/Main";
 import { useGlobalState } from "./components/GlobalProvider";
-import Panel from "./components/Panel";
 import DesignButtons from "./components/DesignButtons";
 import RightPanel from "./components/RightPanel";
 import Merge from "./components/Merge";
 
 function App() {
   const [isMergeMode, setIsMergeMode] = useState(false);
-
   const [data, setData] = useState<Node>(new Node(0, "Root"));
+  const rootNode = data;
   const [nextId, setNextId] = useState<number>(1); // Counter for unique node ids
   const [clickedNodeId, setClickedNodeId] = useState<number | null>(null);
   const [clickedNodeId2, setClickedNodeId2] = useState<number | null>(null);
   const [clickedNode, setClickedNode] = useState<Node | null>(null);
   const [clickedNode2, setClickedNode2] = useState<Node | null>(null);
+  const [initialDesign, setInitialDesign] = useState<number[]>([-1, -1, -1]);
+
+
+  useEffect(() => {
+    handleNodeClick(data); // 'data' is your root node
+  }, []);
 
   const toggleMergeMode = () => {
     setIsMergeMode((prev) => !prev);
@@ -29,12 +34,15 @@ function App() {
     setClickedNode2(null);
   };
 
-  const { setShirt, setPants, setDesign } = useGlobalState();
-
+  const { shirt, pants, design, setShirt, setPants, setDesign } = useGlobalState();
   
 
   const handleNodeClick = (node: Node) => {
-    console.log(node);
+    if(!(initialDesign[0] === shirt && initialDesign[1] === pants && initialDesign[2] === design)) {
+      const confirmSwitch = window.confirm("Unsaved changes will be lost. Do you want to continue?");
+      if (!confirmSwitch) return;
+    }
+
     if (isMergeMode) {
       if (clickedNode === null) {
         setClickedNodeId(node.id);
@@ -51,6 +59,7 @@ function App() {
     setShirt(node.design[0]);
     setPants(node.design[1]);
     setDesign(node.design[2]);
+    setInitialDesign(node.design);
   };
 
   const findNodeById = (node: Node, id: number): Node | null => {
@@ -103,7 +112,7 @@ function App() {
       childName,
       [],
       [design[0], design[1], design[2]],
-      parentNode,
+      rootNode,
     );
     setClickedNodeId(nextId);
     setNextId(nextId + 1); // Increment the id counter
@@ -134,6 +143,8 @@ function App() {
           data={data}
           setData={setData}
           findNodeById={findNodeById}
+          initialDesign={initialDesign}
+          setInitialDesign={setInitialDesign}
         />
       </div>
       {!isMergeMode && (
