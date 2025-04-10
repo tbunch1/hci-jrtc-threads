@@ -62,6 +62,48 @@ const MergeConflict: React.FC<MergeConflictProps> = ({
     });
   }
 
+  const getTextStyle = ():React.CSSProperties => {
+    let tstyle: React.CSSProperties = {
+      backgroundColor: "#ffffff",
+      padding: "5px 10px",
+      borderRadius: '12px',
+      width: "250px",
+      position: 'fixed',
+      bottom: '90px',
+      left: '50%',
+      zIndex: '10',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transform: "translateX(-50%)",
+    }
+    if (conflicts) {
+      switch (conflicts[curConflict]) {
+        case 0: // shirt conflict
+          tstyle = {
+            ...tstyle,
+            transform: "translateX(-50%) translateY(-350px)"
+          };
+          break;
+        case 1:// pants conflict
+          tstyle = {
+            ...tstyle,
+            transform: "translateX(-50%) translateY(-100px)"
+          };
+          break;
+        case 2: //design
+          tstyle = {
+            ...tstyle,
+            transform: "translateX(-50%) translateY(-390px)"
+          };
+          break;
+        }
+      }
+
+    return tstyle
+  }
+
   const getBoxStyle = (design: number):React.CSSProperties => {
     let style: React.CSSProperties = {
       border: '2px dashed #000000',
@@ -119,6 +161,9 @@ const MergeConflict: React.FC<MergeConflictProps> = ({
     return style;
   }
 
+
+
+
   return (
     <div>
       <p className="mergePopup">Merge Conflict</p>
@@ -129,16 +174,17 @@ const MergeConflict: React.FC<MergeConflictProps> = ({
       </div>
 
       <div>
-        <div className="mergeConflictInstr">
+        <div style={getTextStyle() }
+        >
           <p>Select one of the boxed options to keep in the merged design</p>
           <div className="conflictButtons">
-            <button onClick={handleLeftArrowClick}>{`<`}</button>
-            <p>{`${curConflict + 1}/${totalConflicts}`}</p>
-            <button onClick={handleRightArrowClick}>{`>`}</button>
+            <button className = "changeConflictButtons" onClick={handleLeftArrowClick}>{`<`}</button>
+            <p className="designSpacer">{`${curConflict + 1}/${totalConflicts}`}</p>
+            <button className = "changeConflictButtons" onClick={handleRightArrowClick}>{`>`}</button>
           </div>
         </div>
         {conflictsResolved < totalConflicts && <p className="selectStatus">{`${conflictsResolved}/${totalConflicts} conflict(s) resolved`}</p>}
-        {conflictsResolved >= totalConflicts && <button className="confirmButton" onClick={handleConfirmClick}>Confirm</button>}
+        {conflictsResolved >= totalConflicts && <button className="confirmConflictButton" onClick={handleConfirmClick}>Confirm</button>}
       </div>
     </div>
   );

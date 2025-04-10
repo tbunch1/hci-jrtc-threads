@@ -96,12 +96,14 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
       {!isMergeConflictMode && (
         <div>
           <p className="mergePopup">Merge</p>
-          <p className="mergeInstr">Select two design nodes to merge</p>
-          <button className="cancelButton" onClick={onClose}>Cancel</button>
-          {!twoNodesSelected && <p className="selectStatus">{`${numNodesSelected}/2 nodes selected`}</p>}
-          {twoNodesSelected && (
-            <button className="confirmButton" onClick={handleConfirmClick}>Confirm</button>
-          )}
+          <div className="mergeInstr">
+            <p>Select two design nodes to merge</p>
+            <button className="cancelButtonMerge" onClick={onClose}>Cancel</button>
+            {!twoNodesSelected && <p className="selectStatus">{`${numNodesSelected}/2 nodes selected`}</p>}
+            {twoNodesSelected && (
+              <button className="confirmButton" onClick={handleConfirmClick}>Confirm</button>
+            )}
+          </div>
         </div>
       )};
 
@@ -116,7 +118,7 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
             newClothesOpts={designOpts}
             createMergedNode={createMergedNode}
           />
-          <button className="cancelButton" onClick={onClose}>Cancel</button>
+          <button className="cancelConflictButton" onClick={onClose}>Cancel</button>
         </div>
       )}
     </div>

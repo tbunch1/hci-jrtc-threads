@@ -7,7 +7,7 @@ import  PreviewPanel from "./PreviewPanel"
 
 const DesignButtons: React.FC = () => {
     const {shirt, pants, design, setShirt, setPants, setDesign} = useGlobalState();
-    const [selected, setSelected] = useState<number>(0);
+    const [selected, setSelected] = useState<number>(-1);
 
 
 
