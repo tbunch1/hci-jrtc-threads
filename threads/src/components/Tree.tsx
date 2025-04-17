@@ -28,10 +28,13 @@ interface TreeNodeProps {
   addChild: (parent: Node, name: string) => void;
   clickedNodeId: number | null;
   clickedNodeId2: number | null;
-  nodeClick: (node: Node) => void;
+  nodeClick: (node: Node, newNode: boolean) => void;
   isMergeMode: boolean;
   data: Node;
   setData: (data: Node) => void;
+  saveDesign: () => void;
+  initialDesign: number[];
+  setInitialDesign: (design: number[]) => void;
 }
 
 const TreeNode: React.FC<TreeNodeProps> = ({
@@ -43,8 +46,17 @@ const TreeNode: React.FC<TreeNodeProps> = ({
   isMergeMode,
   data,
   setData,
+  saveDesign,
+  initialDesign,
+  setInitialDesign,
 }) => {
+  const { shirt, pants, design } = useGlobalState();
   const handleAddChild = () => {
+    if(!(initialDesign[0] === shirt && initialDesign[1] === pants && initialDesign[2] === design)) {
+      const confirmSwitch = window.confirm("Unsaved changes found. Save the file?");
+      if (!confirmSwitch) return;
+    }
+    saveDesign();
     const childName = prompt("Enter child node name:"); // Prompt for child name
     if (childName) addChild(node, childName);
   };
@@ -89,15 +101,15 @@ const TreeNode: React.FC<TreeNodeProps> = ({
       <div
         className={`w-20 p-2 text-white rounded-lg text-center cursor-pointer shadow-lg transform hover:scale-105 hover:rotate-3 transition-transform duration-300 ease-in-out
     hover:shadow-2xl ${getNodeStyle()}`}
-        onClick={() => nodeClick(node)}
+        onClick={() => nodeClick(node, false)}
       >
         {node.name || "Empty Node"}
       </div>
 
-      <div className="absolute top-0 right-0 -mt-6 flex space-x-2">
+      <div className="absolute top-0 right-0 -mt-6 flex space-x-8">
         {/* Add Child Button */}
         <button
-          className="text-white bg-green-500 rounded-full w-3 h-5 flex items-center justify-center"
+          className="text-white bg-green-500 rounded-full w-6 h-6 flex items-center justify-center"
           onClick={handleAddChild}
         >
           +
@@ -105,7 +117,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
 
         {/* Remove Node Button */}
         <button
-          className="text-white bg-red-500 rounded-full w-3 h-5 flex items-center justify-center"
+          className="text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center"
           onClick={() => handleRemoveNode(node.id)} // Replace with the actual function to remove the node
         >
           -
@@ -113,7 +125,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
       </div>
 
       {node.children && node.children.length > 0 && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-4">
+        <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-8">
           <div className="w-1 h-8 bg-gray-300 absolute top-0 left-1/2 transform -translate-x-1/2"></div>
           <div className="flex space-x-6 relative">
             {node.children.map((child) => (
@@ -122,8 +134,8 @@ const TreeNode: React.FC<TreeNodeProps> = ({
                 <div
                   className="absolute w-1 bg-black"
                   style={{
-                    height: "20px", // Adjust the line height
-                    top: "-40%", // Adjust the line position relative to parent
+                    height: "70px", // Adjust the line height
+                    top: "-90%", // Adjust the line position relative to parent
                     left: "50%",
                     transform: "translateX(-50%)",
                   }}
@@ -138,6 +150,9 @@ const TreeNode: React.FC<TreeNodeProps> = ({
                   isMergeMode={isMergeMode}
                   data={data}
                   setData={setData}
+                  saveDesign={saveDesign}
+                  initialDesign={initialDesign}
+                  setInitialDesign={setInitialDesign}
                 />
               </div>
             ))}
@@ -153,7 +168,7 @@ const Tree: React.FC<{
   isMergeMode: boolean;
   clickedNodeId: number | null;
   clickedNodeId2: number | null;
-  nodeClick: (node: Node) => void;
+  nodeClick: (node: Node, newNode: boolean) => void;
   addChild: (parentNode: Node, childName: string, design?: number[]) => Node;
   data: Node;
   setData: (data: Node) => void;
@@ -254,6 +269,9 @@ const Tree: React.FC<{
             isMergeMode={isMergeMode}
             data={data}
             setData={setData}
+            saveDesign={saveDesign}
+            initialDesign={initialDesign}
+            setInitialDesign={setInitialDesign}
           />
         </div>
       </div>

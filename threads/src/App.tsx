@@ -20,8 +20,33 @@ function App() {
   const [initialDesign, setInitialDesign] = useState<number[]>([-1, -1, -1]);
 
 
+  const saveDesign = () => {
+      setInitialDesign([shirt, pants, design]);
+      if (clickedNodeId === null) return;
+  
+      // Get the node that was clicked
+      const clickedNode = findNodeById(data, clickedNodeId);
+  
+      if (clickedNode) {
+        // Assuming shirt, pants, and design are in the global state or component state
+        const updatedDesign = [shirt, pants, design]; // Replace these with your actual values from state
+        clickedNode.design = updatedDesign;
+  
+        // Update the tree with the modified design
+        const updateTree = (node: Node): Node => {
+          if (node.id === clickedNodeId) {
+            return { ...node, design: updatedDesign };
+          }
+          return { ...node, children: node.children.map(updateTree) };
+        };
+  
+        setData(updateTree(data));
+      }
+      setInitialDesign([shirt, pants, design]);
+    };
+
   useEffect(() => {
-    handleNodeClick(data); // 'data' is your root node
+    handleNodeClick(data, false); // 'data' is your root node
   }, []);
 
   const toggleMergeMode = () => {
@@ -35,13 +60,13 @@ function App() {
   };
 
   const { shirt, pants, design, setShirt, setPants, setDesign } = useGlobalState();
-  
 
-  const handleNodeClick = (node: Node) => {
-    if(!(initialDesign[0] === shirt && initialDesign[1] === pants && initialDesign[2] === design)) {
-      const confirmSwitch = window.confirm("Unsaved changes will be lost. Do you want to continue?");
+  const handleNodeClick = (node: Node, newNode: boolean) => {
+    if(!(initialDesign[0] === shirt && initialDesign[1] === pants && initialDesign[2] === design) && !newNode) {
+      const confirmSwitch = window.confirm("Unsaved changes found. Save the file?");
       if (!confirmSwitch) return;
     }
+    saveDesign();
 
     if (isMergeMode) {
       if (clickedNode === null) {
@@ -124,7 +149,7 @@ function App() {
       return { ...node, children: node.children.map(updateTree) };
     };
 
-    handleNodeClick(newNode);
+    handleNodeClick(newNode, true);
 
     setData((prevData) => updateTree(prevData));
 

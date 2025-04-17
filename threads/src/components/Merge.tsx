@@ -9,7 +9,7 @@ interface MergeProps {
   clickedNode: Node | null;
   clickedNode2: Node | null;
   addChild: (parentNode: Node, childName: string, design?: number[]) => Node;
-  handleNodeClick: (node: Node) => void;
+  handleNodeClick: (node: Node, newNode: boolean) => void;
   findNodeById: (node: Node, id: number) => Node | null;
   data: Node;
   deleteNode: (root: Node, target: Node) => boolean;
@@ -78,7 +78,7 @@ const Merge: React.FC<MergeProps> = ({ onClose, clickedNode, clickedNode2, addCh
         deleteNode(data, node1);
         deleteNode(data, node2);
         const mergedDesign = addChild(data, mergeName, newClothesOpts);
-        handleNodeClick(mergedDesign);
+        handleNodeClick(mergedDesign, false);
       }
       onClose();
     }
