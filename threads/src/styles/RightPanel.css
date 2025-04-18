@@ -1,10 +1,10 @@
 .rightPanel {
   background-color: #ffffff;
-  padding: 10px;
+  padding: 0px;
   border-radius: 16px;
   position: fixed;
-  right: 20px;
-  bottom: 75px;
+  left: 10px;
+  top: 50px;
   z-index: 10;
 }
 
